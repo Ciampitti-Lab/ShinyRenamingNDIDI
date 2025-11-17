@@ -382,8 +382,8 @@ ui <- page_fillable(
           uiOutput("image_list")
         ),
         div(class = "action-buttons",
-          actionButton(
-            "process",
+          downloadButton(
+            "process_download",
             label = "✓ Process & Download",
             class = "btn-success btn-lg",
             icon = icon("download")

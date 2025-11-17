@@ -143,178 +143,106 @@ server <- function(input, output, session) {
     })
   })
   
-  # Process and download images
-  observeEvent(input$process, {
-    # Validate inputs
-    if (input$crop == "") {
-      showModal(modalDialog(
-        title = "Missing Information",
-        "Please select a crop type.",
-        easyClose = TRUE,
-        footer = modalButton("OK")
-      ))
-      return()
-    }
-    
-    if (input$deficiency == "") {
-      showModal(modalDialog(
-        title = "Missing Information",
-        "Please select a nutrient deficiency.",
-        easyClose = TRUE,
-        footer = modalButton("OK")
-      ))
-      return()
-    }
-    
-    if (input$pheno_stage == "") {
-      showModal(modalDialog(
-        title = "Missing Information",
-        "Please select a phenological stage.",
-        easyClose = TRUE,
-        footer = modalButton("OK")
-      ))
-      return()
-    }
-    
-    if (input$def_stage == "") {
-      showModal(modalDialog(
-        title = "Missing Information",
-        "Please select a deficiency stage.",
-        easyClose = TRUE,
-        footer = modalButton("OK")
-      ))
-      return()
-    }
-    
-    if (input$user_name == "") {
-      showModal(modalDialog(
-        title = "Missing Information",
-        "Please enter your name.",
-        easyClose = TRUE,
-        footer = modalButton("OK")
-      ))
-      return()
-    }
-    
-    imgs <- images_data()
-    if (length(imgs) == 0) {
-      showModal(modalDialog(
-        title = "No Images",
-        "Please upload at least one image.",
-        easyClose = TRUE,
-        footer = modalButton("OK")
-      ))
-      return()
-    }
-    
-    # Show processing message
-    output$status_message <- renderUI({
-      div(class = "status-message status-info",
-        "⏳ Processing images... Please wait."
-      )
-    })
-    
-    # Create temporary directory for processed images
-    temp_dir <- tempfile()
-    dir.create(temp_dir)
-    
-    tryCatch({
-      # Process each image
-      for (img_id in names(imgs)) {
-        img <- imgs[[img_id]]
-        
-        # Get file extension
-        ext <- tolower(file_ext(img$name))
-        if (ext == "") ext <- "jpg"
-        
-        # Create new filename
-        # Format: crop_deficiency_phenologicalStage_deficiencyStage_userName_originalName.ext
-        clean_user_name <- gsub("[^a-zA-Z0-9]", "", input$user_name)
-        original_name_no_ext <- file_path_sans_ext(img$name)
-        clean_original_name <- gsub("[^a-zA-Z0-9]", "_", original_name_no_ext)
-        
-        new_filename <- sprintf(
-          "%s_%s_%s_%s_%s_%s.%s",
-          input$crop,
-          input$deficiency,
-          input$pheno_stage,
-          input$def_stage,
-          clean_user_name,
-          clean_original_name,
-          ext
-        )
-        
-        # Copy file to temp directory with new name
-        new_path <- file.path(temp_dir, new_filename)
-        file.copy(img$datapath, new_path)
-      }
-      
-      # Create ZIP file name
-      clean_user_name <- gsub("[^a-zA-Z0-9]", "", input$user_name)
-      zip_filename <- sprintf(
-        "%s_%s_%s.zip",
-        input$crop,
-        input$deficiency,
-        clean_user_name
-      )
-      
-      zip_path <- file.path(tempdir(), zip_filename)
-      
-      # Create ZIP file
-      files_to_zip <- list.files(temp_dir, full.names = TRUE)
-      zip::zip(
-        zipfile = zip_path,
-        files = files_to_zip,
-        mode = "cherry-pick"
-      )
-      
-      # Trigger download
-      output$download_zip <- downloadHandler(
-        filename = function() {
-          zip_filename
-        },
-        content = function(file) {
-          file.copy(zip_path, file)
-        },
-        contentType = "application/zip"
-      )
-      
-      # Trigger the download
-      shinyjs::runjs(sprintf("document.getElementById('%s').click();", "download_zip"))
-      
-      # Show success message
-      output$status_message <- renderUI({
-        div(class = "status-message status-success",
-          sprintf("✓ Successfully processed %d image%s! Download should start automatically.", 
-                  length(imgs), ifelse(length(imgs) > 1, "s", ""))
-        )
-      })
-      
-      # Clean up temp directory
-      unlink(temp_dir, recursive = TRUE)
-      
-    }, error = function(e) {
-      # Show error message
-      output$status_message <- renderUI({
-        div(class = "status-message",
-          style = "background: #ffebee; color: #c62828; border-left: 4px solid #c62828;",
-          sprintf("✗ Error processing images: %s", e$message)
-        )
-      })
-      
-      # Clean up temp directory
-      unlink(temp_dir, recursive = TRUE)
-    })
-  })
-  
-  # Hidden download button
-  output$download_zip <- downloadHandler(
+  # Combined process and download handler
+  output$process_download <- downloadHandler(
     filename = function() {
-      "images.zip"
+      # Validate inputs
+      if (input$crop == "") {
+        showModal(modalDialog(
+          title = "Missing Information",
+          "Please select a crop type.",
+          easyClose = TRUE,
+          footer = modalButton("OK")
+        ))
+        return(NULL)
+      }
+      if (input$deficiency == "") {
+        showModal(modalDialog(
+          title = "Missing Information",
+          "Please select a nutrient deficiency.",
+          easyClose = TRUE,
+          footer = modalButton("OK")
+        ))
+        return(NULL)
+      }
+      if (input$pheno_stage == "") {
+        showModal(modalDialog(
+          title = "Missing Information",
+          "Please select a phenological stage.",
+          easyClose = TRUE,
+          footer = modalButton("OK")
+        ))
+        return(NULL)
+      }
+      if (input$def_stage == "") {
+        showModal(modalDialog(
+          title = "Missing Information",
+          "Please select a deficiency stage.",
+          easyClose = TRUE,
+          footer = modalButton("OK")
+        ))
+        return(NULL)
+      }
+      if (input$user_name == "") {
+        showModal(modalDialog(
+          title = "Missing Information",
+          "Please enter your name.",
+          easyClose = TRUE,
+          footer = modalButton("OK")
+        ))
+        return(NULL)
+      }
+      imgs <- images_data()
+      if (length(imgs) == 0) {
+        showModal(modalDialog(
+          title = "No Images",
+          "Please upload at least one image.",
+          easyClose = TRUE,
+          footer = modalButton("OK")
+        ))
+        return(NULL)
+      }
+      clean_user_name <- gsub("[^a-zA-Z0-9]", "", input$user_name)
+      sprintf("%s_%s_%s.zip", input$crop, input$deficiency, clean_user_name)
     },
     content = function(file) {
-      # This will be overwritten by the process handler
-    }
+      imgs <- images_data()
+      temp_dir <- tempfile()
+      dir.create(temp_dir)
+      tryCatch({
+        for (img_id in names(imgs)) {
+          img <- imgs[[img_id]]
+          ext <- tolower(file_ext(img$name))
+          if (ext == "") ext <- "jpg"
+          clean_user_name <- gsub("[^a-zA-Z0-9]", "", input$user_name)
+          original_name_no_ext <- file_path_sans_ext(img$name)
+          clean_original_name <- gsub("[^a-zA-Z0-9]", "_", original_name_no_ext)
+          new_filename <- sprintf(
+            "%s_%s_%s_%s_%s_%s.%s",
+            input$crop,
+            input$deficiency,
+            input$pheno_stage,
+            input$def_stage,
+            clean_user_name,
+            clean_original_name,
+            ext
+          )
+          new_path <- file.path(temp_dir, new_filename)
+          file.copy(img$datapath, new_path)
+        }
+        files_to_zip <- list.files(temp_dir, full.names = TRUE)
+        zip::zip(
+          zipfile = file,
+          files = files_to_zip,
+          mode = "cherry-pick"
+        )
+        unlink(temp_dir, recursive = TRUE)
+      }, error = function(e) {
+        unlink(temp_dir, recursive = TRUE)
+        stop(e)
+      })
+    },
+    contentType = "application/zip"
   )
   
   # Status message output
