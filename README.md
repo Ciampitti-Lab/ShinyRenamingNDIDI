@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-ShinyRenamingNDIDI is an R package that provides an intuitive Shiny web application designed for agricultural researchers working with nutrient deficiency images. The app standardizes image naming conventions, making it easier to organize and manage large collections of experimental images.
+ShinyRenamingNDIDI is an R package that provides an intuitive Shiny web application designed for agricultural researchers working with nutrient deficiency images and supporting NDIDI. The app standardizes image naming conventions, making it easier to organize and manage large collections of experimental images.
 
 ## ✨ Features
 
@@ -195,6 +195,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👥 Authors
 
 - **Ciampitti Lab** - *Initial work*
+- **Gustavo N. Santiago** - *Initial work*
 
 ## 🙏 Acknowledgments
 

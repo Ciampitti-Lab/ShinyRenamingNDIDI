@@ -29,7 +29,8 @@ required_packages <- c(
   "zip",
   "tools",
   "base64enc",
-  "htmltools"
+  "htmltools",
+  "cli"
 )
 
 cat("Installing required packages...\n")
