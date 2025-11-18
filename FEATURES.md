@@ -43,28 +43,43 @@ ShinyRenamingNDIDI/
 - ✅ Deficiency Stage (4 severity levels)
 - ✅ User Name (text input)
 
-### 3. Image Upload
+### 3. Image Upload (Left Panel)
 - 📤 Drag-and-drop interface
 - 📂 Multiple file selection
 - 🖼️ Supported formats: PNG, JPEG, JPG, TIFF, BMP
 - 👁️ Live thumbnail preview
 
-### 4. Image Management (Right Panel)
+### 4. Current Upload Management (Middle Panel)
 - 📊 Image count display
 - 🖼️ 80x80px thumbnails with file info
 - 📏 File size display (KB/MB)
 - 🗑️ Individual image removal
 - 📋 Organized list view
+- ➕ Add to Batch button
 
-### 5. Processing & Download
+### 5. Batch Management (Right Panel)
+- 📦 Display all saved batches
+- 📊 Batch information (crop, deficiency, stages, image count)
+- 📏 Total size per batch
+- 🗑️ Remove individual batches
+- 📋 Organized batch list
+
+### 6. Processing & Download
 - ✅ Input validation with modal dialogs
 - 🏷️ Standardized naming: `crop_deficiency_phenoStage_defStage_userName_originalName.ext`
-- 📦 ZIP compression: `crop_deficiency_userName.zip`
-- 💾 Automatic download
+- 📦 ZIP compression: `NDIDI_Images_userName_YYYYMMDD_HHMMSS.zip`
+- 💾 One-click download all batches
 - ✓ Success/error status messages
 
-### 6. Reset Functionality
+### 7. Multiple Batch Workflow
+- ➕ Add images in batches with different settings
+- 🔄 Repeat upload/add cycle as needed
+- 📦 All batches processed together
+- 🗂️ Single ZIP with all renamed images
+
+### 8. Reset Functionality
 - 🔄 Clear all uploaded images
+- 🔄 Clear all saved batches
 - 📝 Reset all form fields
 - 🆕 Start fresh workflow
 

@@ -14,15 +14,16 @@ ShinyRenamingNDIDI is an R package that provides an intuitive Shiny web applicat
 
 - **🎨 Beautiful Modern UI**: Clean, responsive interface with gradient designs and smooth animations
 - **📁 Batch Image Upload**: Upload multiple images at once via drag-and-drop or file selection
+- **➕ Multiple Batch Support**: Add images in different batches with different settings before downloading
 - **👁️ Image Preview**: View thumbnails of uploaded images with file information
-- **🗑️ Selective Removal**: Remove individual images before processing
+- **🗑️ Selective Removal**: Remove individual images or entire batches before processing
 - **🏷️ Standardized Naming**: Automatic renaming following the pattern:
   ```
   crop_deficiency_phenologicalStage_deficiencyStage_userName_originalName.ext
   ```
-- **📦 Automatic Compression**: All processed images are packaged into a ZIP file
-- **💾 Easy Download**: One-click download of renamed and compressed images
-- **🔄 Quick Reset**: Clear all inputs and start fresh with a single click
+- **📦 Automatic Compression**: All processed images are packaged into a single ZIP file
+- **💾 Easy Download**: One-click download of all renamed and compressed images
+- **🔄 Quick Reset**: Clear all inputs and batches and start fresh with a single click
 
 ## 🚀 Installation
 
@@ -70,48 +71,73 @@ The application will open in your default web browser.
 
 ### Workflow
 
-1. **Select Metadata**:
+1. **Select Metadata** (Left Panel):
    - Choose the **crop type** (corn, soybean, wheat, etc.)
    - Select the **nutrient deficiency** (N, P, K, etc.)
    - Pick the **phenological stage** (vegetative, reproductive, etc.)
    - Specify the **deficiency stage** (none, mild, moderate, severe)
    - Enter **your name**
 
-2. **Upload Images**:
+2. **Upload Images** (Left Panel):
    - Click the upload area or drag-and-drop your images
    - Supported formats: PNG, JPEG, JPG, TIFF, BMP
-   - Preview thumbnails appear on the right panel
+   - Preview thumbnails appear in the middle panel
 
-3. **Review and Edit**:
+3. **Review Current Upload** (Middle Panel):
    - Check the uploaded images
    - Remove any unwanted images using the "Remove" button
 
-4. **Process and Download**:
-   - Click the **"✓ Process & Download"** button
-   - Images are automatically renamed and compressed
-   - ZIP file downloads with the naming pattern: `crop_deficiency_userName.zip`
+4. **Add to Batch** (Middle Panel):
+   - Click the **"+ Add to Batch"** button
+   - Images are saved with current metadata settings
+   - Batch appears in the right panel
 
-5. **Start Fresh**:
-   - Click **"↻ Clear All"** to reset all fields and start over
+5. **Repeat for Different Settings** (Optional):
+   - Change metadata settings in left panel
+   - Upload new images
+   - Add another batch
+   - Repeat as needed for different crops/deficiencies/stages
+
+6. **Review All Batches** (Right Panel):
+   - See all saved batches with their settings
+   - Remove individual batches if needed
+
+7. **Download All**:
+   - Click the **"📥 Download All"** button
+   - All images from all batches are renamed and compressed
+   - ZIP file downloads with timestamp: `NDIDI_Images_userName_YYYYMMDD_HHMMSS.zip`
+
+8. **Start Fresh**:
+   - Click **"↻ Clear All"** to reset all fields, images, and batches
 
 ### Example Output
 
-**Input**: 
+**Batch 1 Input**: 
 - Crop: Corn
 - Deficiency: Nitrogen
 - Phenological Stage: VE (Vegetative Early)
 - Deficiency Stage: Severe
 - User Name: JohnDoe
-- Original Image: `IMG_001.jpg`
+- Original Images: `IMG_001.jpg`, `IMG_002.jpg`
 
-**Output Filename**: 
+**Batch 2 Input**: 
+- Crop: Wheat
+- Deficiency: Phosphorus
+- Phenological Stage: RM (Reproductive Mid)
+- Deficiency Stage: Moderate
+- User Name: JohnDoe
+- Original Image: `IMG_003.jpg`
+
+**Output Filenames in ZIP**: 
 ```
 corn_nitrogen_VE_severe_JohnDoe_IMG_001.jpg
+corn_nitrogen_VE_severe_JohnDoe_IMG_002.jpg
+wheat_phosphorus_RM_moderate_JohnDoe_IMG_003.jpg
 ```
 
 **ZIP Archive**: 
 ```
-corn_nitrogen_JohnDoe.zip
+NDIDI_Images_JohnDoe_20251118_143022.zip
 ```
 
 ## 🎯 Use Cases

@@ -42,40 +42,52 @@ run_app()
 2.  **Upload images** (left panel):
     -   Click the upload area or drag & drop
     -   Accepts: PNG, JPEG, JPG, TIFF, BMP
-3.  **Review images** (right panel):
+3.  **Review images** (middle panel):
     -   See thumbnails of uploaded images
     -   Remove unwanted images
-4.  **Process**:
-    -   Click "✓ Process & Download"
-    -   ZIP file downloads automatically
-5.  **Reset**:
+4.  **Add to batch** (middle panel):
+    -   Click "+ Add to Batch"
+    -   Batch is saved with current settings
+5.  **Add more batches** (optional):
+    -   Change settings in left panel
+    -   Upload new images
+    -   Click "+ Add to Batch" again
+6.  **Review batches** (right panel):
+    -   See all saved batches
+    -   Remove unwanted batches
+7.  **Download**:
+    -   Click "📥 Download All"
+    -   ZIP file downloads with all images
+8.  **Reset**:
     -   Click "↻ Clear All" to start over
 
 ## 📸 Example Usage
 
-**Scenario**: You have corn images showing nitrogen deficiency at early
-vegetative stage.
+**Scenario**: You have corn and wheat images with different deficiencies.
 
-1.  Select:
+1.  **Batch 1** - Corn with nitrogen deficiency:
+    -   Select: Corn, Nitrogen (N), VE, Severe, JohnDoe
+    -   Upload: `photo1.jpg`, `photo2.jpg`
+    -   Click "+ Add to Batch"
 
-    -   Crop: Corn
-    -   Deficiency: Nitrogen (N)
-    -   Stage: Vegetative Early (V1-V3)
-    -   Severity: Severe
-    -   Name: JohnDoe
+2.  **Batch 2** - Wheat with phosphorus deficiency:
+    -   Change to: Wheat, Phosphorus (P), RM, Moderate, JohnDoe
+    -   Upload: `photo3.jpg`
+    -   Click "+ Add to Batch"
 
-2.  Upload: `photo1.jpg`, `photo2.jpg`, `photo3.jpg`
+3.  **Download**: Click "📥 Download All"
 
-3.  Result: Downloads `corn_nitrogen_JohnDoe.zip` containing:
-
+4.  Result: Downloads `NDIDI_Images_JohnDoe_20251118_143022.zip` containing:
     -   `corn_nitrogen_VE_severe_JohnDoe_photo1.jpg`
     -   `corn_nitrogen_VE_severe_JohnDoe_photo2.jpg`
-    -   `corn_nitrogen_VE_severe_JohnDoe_photo3.jpg`
+    -   `wheat_phosphorus_RM_moderate_JohnDoe_photo3.jpg`
 
 ## 💡 Tips
 
+-   **Multiple Batches**: Add as many batches as you need before downloading
+-   **Different Settings**: Each batch can have different crop/deficiency/stage settings
 -   **Batch Upload**: Select multiple files at once (Ctrl/Cmd + Click)
--   **Preview**: Check image thumbnails before processing
+-   **Preview**: Check image thumbnails before adding to batch
 -   **Validation**: App alerts if required fields are missing
 -   **Clear**: Use "Clear All" to reset everything quickly
 

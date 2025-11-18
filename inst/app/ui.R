@@ -186,6 +186,47 @@ ui <- page_fillable(
         word-break: break-word;
       }
       
+      .batch-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        margin: 10px 0;
+        background: white;
+        border-radius: 8px;
+        border: 2px solid #e0e0e0;
+        transition: all 0.2s ease;
+      }
+      
+      .batch-item:hover {
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        border-color: #2E7D32;
+        background: #f9fdf9;
+      }
+      
+      .batch-info {
+        flex-grow: 1;
+      }
+      
+      .btn-primary {
+        background: linear-gradient(135deg, #0288D1 0%, #039BE5 100%);
+        border: none;
+        border-radius: 8px;
+        padding: 12px 30px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        color: white;
+      }
+      
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        background: linear-gradient(135deg, #01579B 0%, #0277BD 100%);
+        color: white;
+      }
+      
       .upload-area {
         border: 3px dashed #2E7D32;
         border-radius: 12px;
@@ -270,11 +311,11 @@ ui <- page_fillable(
   
   div(class = "app-title",
     h1("🌱 Nutrient Deficiency Image Manager"),
-    p("Standardized image renaming and compression for research")
+    p("Standardized image renaming and compression for research - Add multiple batches before downloading")
   ),
   
   layout_columns(
-    col_widths = c(5, 7),
+    col_widths = c(4, 4, 4),
     
     # Left Panel - Metadata Input
     card(
@@ -371,22 +412,42 @@ ui <- page_fillable(
       )
     ),
     
-    # Right Panel - Image Preview and Actions
+    # Middle Panel - Current Upload Preview
     card(
-      card_header("🖼️ Uploaded Images"),
+      card_header("🖼️ Current Upload"),
       card_body(
         uiOutput("image_count"),
         hr(),
         div(
-          style = "max-height: 500px; overflow-y: auto;",
+          style = "max-height: 400px; overflow-y: auto;",
           uiOutput("image_list")
         ),
         div(class = "action-buttons",
+          actionButton(
+            "add_batch",
+            label = "+ Add to Batch",
+            class = "btn-primary btn-lg",
+            icon = icon("plus-circle")
+          )
+        ),
+        uiOutput("status_message")
+      )
+    ),
+    
+    # Right Panel - Saved Batches
+    card(
+      card_header("📦 Saved Batches"),
+      card_body(
+        div(
+          style = "max-height: 400px; overflow-y: auto;",
+          uiOutput("batch_list")
+        ),
+        hr(),
+        div(class = "action-buttons",
           downloadButton(
             "process_download",
-            label = "✓ Process & Download",
-            class = "btn-success btn-lg",
-            icon = icon("download")
+            label = "📥 Download All",
+            class = "btn-success btn-lg"
           ),
           actionButton(
             "clear",
@@ -394,8 +455,7 @@ ui <- page_fillable(
             class = "btn-danger btn-lg",
             icon = icon("trash")
           )
-        ),
-        uiOutput("status_message")
+        )
       )
     )
   )
