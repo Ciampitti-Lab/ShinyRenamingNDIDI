@@ -140,100 +140,363 @@ wheat_phosphorus_RM_moderate_JohnDoe_IMG_003.jpg
 NDIDI_Images_JohnDoe_20251118_143022.zip
 ```
 
-## 🎯 Use Cases
+## 📸 Quick Start Guide
 
-This tool is perfect for:
+### Step 1: Install Dependencies
 
-- **Agricultural Research**: Organizing nutrient deficiency trial images
-- **Plant Phenotyping**: Standardizing image nomenclature for datasets
-- **Data Management**: Preparing images for analysis or archival
-- **Collaborative Projects**: Ensuring consistent naming across team members
-- **Educational Materials**: Creating organized image libraries for teaching
+Open R or RStudio and run:
 
-## 🛠️ Technical Details
-
-### Package Structure
-
-```
-ShinyRenamingNDIDI/
-├── DESCRIPTION          # Package metadata and dependencies
-├── NAMESPACE            # Package namespace
-├── LICENSE              # MIT License
-├── README.md            # This file
-├── R/
-│   └── run_app.R        # Main function to launch the app
-└── inst/
-    └── app/
-        ├── app.R        # Shiny app entry point
-        ├── ui.R         # User interface definition
-        └── server.R     # Server logic and processing
+``` r
+source("setup.R")
 ```
 
-### Dependencies
+This will automatically install all required packages.
 
-- **shiny** (>= 1.7.0): Web application framework
-- **bslib** (>= 0.5.0): Bootstrap themes for Shiny
-- **shinyjs** (>= 2.1.0): JavaScript operations in Shiny
-- **zip** (>= 2.3.0): ZIP file creation
-- **tools**: File utilities
-- **base64enc**: Image encoding for previews
-- **htmltools**: HTML generation
+### Step 2: Load and Run
 
-### Naming Convention
+``` r
+# Option A: Run without installing
+devtools::load_all()
+run_app()
 
-The application uses a structured naming convention:
-
-```
-{crop}_{deficiency}_{phenoStage}_{defStage}_{userName}_{originalName}.{ext}
+# Option B: Install and run
+devtools::install()
+library(ShinyRenamingNDIDI)
+run_app()
 ```
 
-- **crop**: Crop type identifier (e.g., corn, soybean)
-- **deficiency**: Nutrient identifier (e.g., nitrogen, phosphorus)
-- **phenoStage**: Growth stage code (e.g., VE, RM)
-- **defStage**: Severity level (none, mild, moderate, severe)
-- **userName**: User identifier (sanitized)
-- **originalName**: Original filename (sanitized)
-- **ext**: Original file extension
+### Step 3: Use the App
 
-## 🎨 UI Features
+1.  **Fill in metadata** (left panel):
+    -   Select crop type
+    -   Select nutrient deficiency
+    -   Select phenological stage
+    -   Select deficiency stage
+    -   Enter your name
+2.  **Upload images** (left panel):
+    -   Click the upload area or drag & drop
+    -   Accepts: PNG, JPEG, JPG, TIFF, BMP
+3.  **Review images** (middle panel):
+    -   See thumbnails of uploaded images
+    -   Remove unwanted images
+4.  **Add to batch** (middle panel):
+    -   Click "+ Add to Batch"
+    -   Batch is saved with current settings
+5.  **Add more batches** (optional):
+    -   Change settings in left panel
+    -   Upload new images
+    -   Click "+ Add to Batch" again
+6.  **Review batches** (right panel):
+    -   See all saved batches
+    -   Remove unwanted batches
+7.  **Download**:
+    -   Click "📥 Download All"
+    -   ZIP file downloads with all images
+8.  **Reset**:
+    -   Click "↻ Clear All" to start over
 
-- **Gradient Backgrounds**: Modern color schemes using green tones
-- **Responsive Design**: Works on desktop and mobile devices
-- **Image Thumbnails**: Preview images at 80x80px
-- **Hover Effects**: Interactive elements with smooth transitions
-- **Form Validation**: Alerts for missing required fields
-- **Status Messages**: Clear feedback for user actions
+## 🔧 Troubleshooting Guide
 
-## 🤝 Contributing
+### Installation Issues
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+#### Problem: "Package 'xxx' is not available"
+**Solution:**
+```r
+# Update R and install packages from CRAN
+update.packages(ask = FALSE)
+install.packages(c("shiny", "bslib", "shinyjs", "zip", "base64enc", "htmltools"))
+```
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+#### Problem: "devtools not found"
+**Solution:**
+```r
+install.packages("devtools")
+```
 
-## 📝 License
+#### Problem: Package won't install
+**Solution:**
+```r
+# Try installing dependencies manually
+install.packages("shiny")
+install.packages("bslib")
+install.packages("shinyjs")
+install.packages("zip")
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+# Then try again
+devtools::install()
+```
 
-## 👥 Authors
+### App Launch Issues
 
-- **Ciampitti Lab** - *Initial work*
-- **Gustavo N. Santiago** - *Initial work*
+#### Problem: "Could not find app directory"
+**Solution:**
+```r
+# Make sure you're in the package directory
+setwd("path/to/ShinyRenamingNDIDI")
 
-## 🙏 Acknowledgments
+# Load the package first
+devtools::load_all()
 
-- Built with [Shiny](https://shiny.rstudio.com/) by RStudio
-- UI components from [bslib](https://rstudio.github.io/bslib/)
-- Icons and styling inspired by modern web design practices
+# Then run
+run_app()
+```
 
-## 📧 Contact
+#### Problem: App won't start - "Error in shinyApp"
+**Solution:**
+```r
+# Check if all packages are loaded
+library(shiny)
+library(bslib)
+library(shinyjs)
 
-For questions, suggestions, or issues, please open an issue on GitHub or contact the Ciampitti Lab.
+# Try running directly from the app folder
+shiny::runApp("inst/app")
+```
+
+#### Problem: Port already in use
+**Solution:**
+```r
+# Specify a different port
+shiny::runApp("inst/app", port = 3838)
+```
+
+### Upload Issues
+
+#### Problem: Images won't upload
+**Solution:**
+1. Check file format (must be PNG, JPEG, JPG, TIFF, or BMP)
+2. Check file size (very large files may take time)
+3. Check browser console for errors (F12)
+4. Try smaller number of files first
+
+#### Problem: "File input not responding"
+**Solution:**
+```r
+# Restart the R session
+.rs.restartR()
+
+# Reload and try again
+devtools::load_all()
+run_app()
+```
+
+#### Problem: Thumbnails not showing
+**Solution:**
+1. Ensure `base64enc` package is installed:
+   ```r
+   install.packages("base64enc")
+   ```
+2. Check if image files are corrupted
+3. Try with PNG files first
+
+### Processing Issues
+
+#### Problem: "Download not starting"
+**Solution:**
+1. Check browser popup blocker settings
+2. Allow downloads from localhost
+3. Check disk space
+4. Try different browser
+
+#### Problem: ZIP file is empty
+**Solution:**
+1. Check if `zip` package is installed:
+   ```r
+   install.packages("zip")
+   ```
+2. Check temporary directory has write permissions:
+   ```r
+   tempdir()
+   file.access(tempdir(), 2)  # Should return 0
+   ```
+
+#### Problem: "Processing" message stays forever
+**Solution:**
+1. Check R console for errors
+2. Restart app
+3. Try with fewer images
+4. Check available memory
+
+#### Problem: Renamed files have wrong format
+**Solution:**
+1. Verify all metadata fields are filled
+2. Check for special characters in your name
+3. Review naming pattern in documentation
+
+### Browser Issues
+
+#### Problem: Layout looks broken
+**Solution:**
+1. Clear browser cache (Ctrl+F5)
+2. Try different browser (Chrome, Firefox, Edge)
+3. Check browser zoom level (should be 100%)
+4. Disable browser extensions
+
+#### Problem: Buttons not clickable
+**Solution:**
+1. Ensure JavaScript is enabled
+2. Check browser console for errors (F12)
+3. Try incognito/private mode
+4. Update browser to latest version
+
+### Performance Issues
+
+#### Problem: App is slow with many images
+**Solution:**
+1. Upload images in smaller batches
+2. Close other R sessions
+3. Increase R memory limit:
+   ```r
+   memory.limit(size = 8000)  # Windows
+   ```
+4. Use lower resolution images if possible
+
+#### Problem: R crashes when processing
+**Solution:**
+1. Reduce number of images
+2. Check available RAM
+3. Close unnecessary programs
+4. Update R to latest version
+
+### Validation Issues
+
+#### Problem: "Please select..." messages keep appearing
+**Solution:**
+1. Make sure all dropdown menus have selections (not "Select...")
+2. Ensure name field is not empty
+3. Upload at least one image
+
+#### Problem: Can't select certain options
+**Solution:**
+1. Click directly on the dropdown text
+2. Try using keyboard (Tab + Arrow keys)
+3. Refresh the page
+
+### Windows-Specific Issues
+
+#### Problem: File paths with spaces causing errors
+**Solution:**
+```r
+# Use quotes around paths
+setwd("C:/Users/My Name/Documents/ShinyRenamingNDIDI")
+
+# Or use short path
+setwd("C:/Users/MYNAME~1/Documents/SHINYR~1")
+```
+
+#### Problem: Permission denied errors
+**Solution:**
+1. Run RStudio as Administrator
+2. Check folder permissions
+3. Use a different temporary directory:
+   ```r
+   Sys.setenv(TMPDIR = "C:/Temp")
+   ```
+
+### Debugging Tips
+
+#### Enable Debug Mode
+
+```r
+# See what's happening in the console
+options(shiny.trace = TRUE)
+run_app()
+```
+
+#### Check Package Installation
+
+```r
+# Verify package is installed correctly
+packageVersion("ShinyRenamingNDIDI")
+
+# Check dependencies
+tools::package_dependencies("ShinyRenamingNDIDI", 
+                           which = "Imports")
+```
+
+#### Test Components Individually
+
+```r
+# Test file operations
+test_file <- tempfile(fileext = ".jpg")
+file.create(test_file)
+file.exists(test_file)
+
+# Test ZIP creation
+zip::zip("test.zip", test_file)
+file.exists("test.zip")
+```
+
+#### View Error Messages
+
+```r
+# Run with error catching
+tryCatch(
+  run_app(),
+  error = function(e) {
+    print(e)
+    traceback()
+  }
+)
+```
+
+### Getting Help
+
+If you still have issues:
+
+1. **Check R Console**: Look for error messages
+2. **Browser Console**: Press F12, check Console tab
+3. **Session Info**: Run `sessionInfo()` and share output
+4. **Create Issue**: Open GitHub issue with:
+   - R version
+   - Package versions
+   - Error messages
+   - Steps to reproduce
+
+#### Template for Bug Reports
+
+```
+**Environment:**
+- R Version: [e.g., 4.3.0]
+- OS: [e.g., Windows 10]
+- Browser: [e.g., Chrome 120]
+
+**Package Versions:**
+[Run sessionInfo() and paste output]
+
+**Problem Description:**
+[Describe what happened]
+
+**Expected Behavior:**
+[Describe what should happen]
+
+**Steps to Reproduce:**
+1. [First step]
+2. [Second step]
+3. [etc.]
+
+**Error Messages:**
+[Paste any error messages]
+
+**Screenshots:**
+[If applicable]
+```
+
+### Quick Fixes Checklist
+
+Before asking for help, try this checklist:
+
+- [ ] R is up to date (>= 4.0.0)
+- [ ] All packages are installed
+- [ ] RStudio is restarted
+- [ ] Browser cache is cleared
+- [ ] No popup blocker active
+- [ ] Sufficient disk space
+- [ ] Working internet connection
+- [ ] No other R sessions running
+- [ ] File permissions are correct
+- [ ] Antivirus not blocking
 
 ---
 
-**Made with ❤️ for agricultural research**
-A Shiny tool to rename images for the Nutrient Deficiency Image Database Initiative (NDIDI)
+**Most issues can be solved by restarting R and reinstalling packages!**
